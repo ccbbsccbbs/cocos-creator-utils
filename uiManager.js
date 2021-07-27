@@ -28,7 +28,7 @@ module.exports = {
      * _uiMgr.showUI('lobby').then(lobbyNode => lobbyNode.x = 0);
      * ```
      */
-    showUI(name, parentNode = cc.find('Canvas')) {
+    showUI(name, parentNode = cc.director.getScene().children[0]) {
         const {
             _class,
             _prefab
