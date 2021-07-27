@@ -1,9 +1,16 @@
 /**
- * @author mdong
+ * @author ccbbsccbbs
  * @file to manager the projet ui
  * @example
  * ```js
  * const _uiMgr=require('uiManager');
+ * ```
+ * > before use you should meet these conditions
+ * - put the ui prefab in the "resources/prefab" folder
+ * - set the _prefabName to the ui script file like:
+ * ```js
+ * const ui=cc.Class({});
+ * ui._prefabName=`${prefabNameOfThisUI}`;
  * ```
  */
 
