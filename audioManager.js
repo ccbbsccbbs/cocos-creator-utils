@@ -36,8 +36,8 @@ module.exports = {
      */
     playEffect(name, loop, volume) {
         return this._playSound(name, volume, loop,
-            cc.audioEngine.setEffectsVolume,
-            cc.audioEngine.playEffect
+            'setEffectsVolume',
+            'playEffect'
         );
     },
     /**
@@ -60,16 +60,16 @@ module.exports = {
      */
     playMusic(name, loop, volume) {
         return this._playSound(name, volume, loop,
-            cc.audioEngine.setMusicVolume,
-            cc.audioEngine.playMusic
+            'setMusicVolume',
+            'playMusic'
         );
     },
     stopMusic() {
         cc.audioEngine.stopMusic();
     },
     _playSound(name, volume, loop, volumeFunc, playFunc) {
-        if (volume) volumeFunc(volume);
-        const _id = playFunc(name, !!loop);
+        if (volume) cc.audioEngine[volumeFunc](volume);
+        const _id = cc.audioEngine[playFunc](this._audioCache[name], !!loop);
         this._playHistory[name] = _id;
         cc.audioEngine.setFinishCallback(_id, () => this._playHistory[_id] = null);
         return _id;
