@@ -17,7 +17,7 @@ module.exports = {
      * - if para is undefined . mgr will load the sound dir
      * - if para is string . mgr will load the sound that given name
      * - if para is array<string> . mgr will load all the sound that given name
-     * @returns {Object} includes the key(sound name) and value(audio clip)
+     * @returns {string|string[]} loaded sound name or name's array
      */
     preloadSound(name) {
         if (this._audioCache[name]) return Promise.resolve(this._audioCache);
@@ -79,7 +79,7 @@ module.exports = {
             cc.resources.load(path, cc.AudioClip, (err, asset) => {
                 if (err) return reject(err);
                 this._audioCache[name] = asset;
-                resolve(this._audioCache);
+                resolve(name);
             })
         })
     },
@@ -88,7 +88,7 @@ module.exports = {
             cc.resources.loadDir('sound', cc.AudioClip, (err, assets) => {
                 if (err) return reject(err);
                 assets.forEach(v => this._audioCache[v.name] = v);
-                resolve(this._audioCache);
+                resolve(assets.map(v=>v.name));
             })
         })
     }
