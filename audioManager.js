@@ -10,7 +10,7 @@
  */
 module.exports = {
     _audioCache: {},
-    _playHistory: {},
+    _playHistory: new WeakMap(),
     /**
      * !#en preload sound
      * @param {string?} name 
@@ -47,7 +47,7 @@ module.exports = {
     stopEffect(nameOrId) {
         switch (typeof nameOrId) {
             case 'undefined': cc.audioEngine.stopAllEffects(); break;
-            case 'string': cc.audioEngine.stopEffect(this._playHistory[nameOrId]); break;
+            case 'string': cc.audioEngine.stopEffect(this._playHistory.get(nameOrId)); break;
             case 'number': cc.audioEngine.stopEffect(nameOrId); break;
         }
     },
@@ -70,8 +70,8 @@ module.exports = {
     _playSound(name, volume, loop, volumeFunc, playFunc) {
         if (volume) cc.audioEngine[volumeFunc](volume);
         const _id = cc.audioEngine[playFunc](this._audioCache[name], !!loop);
-        this._playHistory[name] = _id;
-        cc.audioEngine.setFinishCallback(_id, () => this._playHistory[_id] = null);
+        this._playHistory.set(name,_id);
+        cc.audioEngine.setFinishCallback(_id, () => this._playHistory.delete(name));
         return _id;
     },
     _loadSound(name, path = 'sound/' + name) {
